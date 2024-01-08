@@ -124,7 +124,7 @@ class HBNBCommand(cmd.Cmd):
         ''' Separate the strings'''
         list_args = args.split()
         
-        """ Get the class name """
+        """ Get the class name and create instance """
         class_name = list_args[0]
         new_instance = self.classes[class_name]()
 
