@@ -58,7 +58,7 @@ class HBNBCommand(cmd.Cmd):
             if _cmd not in HBNBCommand.dot_cmds:
                 raise Exception
 
-            # if parantheses contain arguments, parse them
+            # if parentheses contain arguments, parse them
             pline = pline[pline.find('(') + 1:pline.find(')')]
             if pline:
                 # partition args: (<id>, [<delim>], [<*args>])
@@ -227,21 +227,48 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
-        print_list = []
+        if not args:
+            print("** class name missing **")
+            return
 
-        if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
-        else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+        class_name, *parameters = args.split(" ")
 
-        print(print_list)
+        if class_name not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+
+
+        try:
+            new_instance = HBNBCommand.classes[class_name]()
+        except Exception as e:
+            print("** error creating instance: {} **".format(e))
+            return
+
+        for parameter in parameters:
+            try:
+                key, value = parameter.split("=")
+                if hasattr(new_instance, key):
+                    # Cast the attribute value
+                    if value.startswith('"') and value.endswith('"'):
+                        value = value[1:-1].replace('"', r'\"').replace('_', " ")
+                    elif "." in value and "@" not in value:
+                        try:
+                            value = float(value)
+                        except ValueError:
+                            pass
+                    else:
+                        try:
+                            value = int(value)
+                        except ValueError:
+                            pass
+
+                    # Set the attribute value
+                    setattr(new_instance, key, value)
+            except ValueError:
+                continue
+
+        new_instance.save()
+        print(new_instance.id)
 
     def help_all(self):
         """ Help information for the all command """
