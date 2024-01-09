@@ -1,5 +1,5 @@
 #! /usr/bin/python3
-''' Module that create a server that  '''
+''' Module that create a server that accept variables '''
 from flask import Flask
 from markupsafe import escape
 
