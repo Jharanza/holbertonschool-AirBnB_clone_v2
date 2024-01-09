@@ -34,11 +34,9 @@ class DBStorage:
         db = {}
         all_classes = ['User', 'Review', 'Place', 'City', 'State']
         if cls is None:
-            for cl in all_classes:
-                cl = eval(cl)
-                for instance in self.__session.query(cl).all():
-                    key = instance.__class__.__name__ + '.' + instance.id
-                    db[key] = instance
+            for instance in self.__session.query().all():
+                key = instance.__class__.__name__ + '.' + instance.id
+                db[key] = instance
         else:
             for instance in self.__session.query(cls).all():
                 key = instance.__class__.__name__ + '.' + instance.id

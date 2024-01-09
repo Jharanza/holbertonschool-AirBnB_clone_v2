@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+from os import getenv
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -125,7 +126,13 @@ class HBNBCommand(cmd.Cmd):
         list_args = args.split()
         
         """ Get the class name and create instance """
+        if list_args[0] not in self.classes:
+            print("** class doesn't exist **")
+            return
+
         class_name = list_args[0]
+        class_name = class_name.strip()
+
         new_instance = self.classes[class_name]()
 
         for arg in list_args[1:]:
@@ -147,7 +154,7 @@ class HBNBCommand(cmd.Cmd):
                         value = int(value)
                     except ValueError:
                         pass
-
+                    
                 new_instance.__dict__.update({attr: value})                       
 
         storage.new(new_instance)
@@ -227,48 +234,19 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
-        if not args:
-            print("** class name missing **")
-            return
-
-        class_name, *parameters = args.split(" ")
-
-        if class_name not in HBNBCommand.classes:
+        obj_list = args.split()
+        if len(args) == 0:
+            obj_dict = self.storage.all()
+        elif args[0] in self.classes:
+            obj_dict = self.storage.all(self.classes[args[0]])
+        else:
             print("** class doesn't exist **")
-            return
-
-
-        try:
-            new_instance = HBNBCommand.classes[class_name]()
-        except Exception as e:
-            print("** error creating instance: {} **".format(e))
-            return
-
-        for parameter in parameters:
-            try:
-                key, value = parameter.split("=")
-                if hasattr(new_instance, key):
-                    # Cast the attribute value
-                    if value.startswith('"') and value.endswith('"'):
-                        value = value[1:-1].replace('"', r'\"').replace('_', " ")
-                    elif "." in value and "@" not in value:
-                        try:
-                            value = float(value)
-                        except ValueError:
-                            pass
-                    else:
-                        try:
-                            value = int(value)
-                        except ValueError:
-                            pass
-
-                    # Set the attribute value
-                    setattr(new_instance, key, value)
-            except ValueError:
-                continue
-
-        new_instance.save()
-        print(new_instance.id)
+            return False
+        for key in obj_dict:
+            obj_list.append(str(obj_dict[key]))
+        print("[", end="")
+        print(", ".join(obj_list), end="")
+        print("]")
 
     def help_all(self):
         """ Help information for the all command """
