@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def start():
+def hello():
     '''Method that show a message'''
     return 'Hello HBNB!'
 
