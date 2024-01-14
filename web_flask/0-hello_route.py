@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-''' module that create a basic server '''
+"""module that create a basic server""" 
 from flask import Flask
 
 
@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def start():
-    ''' Method that show a message'''
+    '''Method that show a message'''
     return 'Hello HBNB!'
 
 
