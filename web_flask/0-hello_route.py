@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#!/usr/bin/python3
 ''' module that create a basic server '''
 from flask import Flask
 
