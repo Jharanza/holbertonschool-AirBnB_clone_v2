@@ -12,23 +12,23 @@ if getenv('HBNB_TYPE_STORAGE') == 'db':
 
         __tablename__ = 'places'
 
-        city_id = Column(String(60),ForeignKey('cities.id'), nullable=False)
+        city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
         user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
         name = Column(String(128), nullable=False)
-        description = Column(String(1024), nullable=False)
+        description = Column(String(1024), default='', nullable=True)
         number_rooms = Column(Integer, default=0, nullable=False)
         number_bathrooms = Column(Integer, default=0, nullable=False)
         max_guest = Column(Integer, default=0, nullable=False)
         price_by_night = Column(Integer, default=0, nullable=False)
-        latitude = Column(Float, nullable=False)
-        longitude = Column(Float, nullable=False)
+        latitude = Column(Float, default=0.0, nullable=True)
+        longitude = Column(Float, default=0.0, nullable=True)
         amenity_ids = []
 
 else:
     class Place(BaseModel):
         city_id = ''
         user_id = ''
-        name =''
+        name = ''
         description = ''
         number_rooms = 0
         number_bathrooms = 0

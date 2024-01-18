@@ -10,6 +10,7 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
+
 class DBStorage:
     """This class manages databases of hbnb models """
     __engine = None
@@ -38,7 +39,8 @@ class DBStorage:
             for kls in all_classes:
                 kls = eval(kls)
                 for new_instance in self.__session.query(kls).all():
-                    key = new_instance.__class__.__name__ + '.' + new_instance.id
+                    key = new_instance.__class__.__name__
+                    + '.' + new_instance.id
                     db[key] = new_instance
         else:
             for new_instance in self.__session.query(cls).all():
@@ -69,4 +71,4 @@ class DBStorage:
 
     def close(self):
         """ Log out of the database """
-        self.__session.close()         
+        self.__session.close()
