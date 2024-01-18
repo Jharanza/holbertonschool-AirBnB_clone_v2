@@ -1,13 +1,13 @@
 #! /usr/bin/python3
 from os import getenv
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.orm import sessionmaker, scoped_session, declarative_base
 from models.base_model import Base
 from models.user import User
+from models.place import Place
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
-from models.place import Place
 from models.review import Review
 
 class DBStorage:
@@ -27,6 +27,7 @@ class DBStorage:
                 pool_pre_ping=True)
 
         if getenv('HBNB_ENV') == "test":
+            # Check if type of storage is test to drop it
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
@@ -34,13 +35,15 @@ class DBStorage:
         db = {}
         all_classes = ['User', 'Review', 'Place', 'City', 'State']
         if cls is None:
-            for instance in self.__session.query().all():
-                key = instance.__class__.__name__ + '.' + instance.id
-                db[key] = instance
+            for kls in all_classes:
+                kls = eval(kls)
+                for new_instance in self.__session.query(kls).all():
+                    key = new_instance.__class__.__name__ + '.' + new_instance.id
+                    db[key] = new_instance
         else:
-            for instance in self.__session.query(cls).all():
-                key = instance.__class__.__name__ + '.' + instance.id
-                db[key] = instance
+            for new_instance in self.__session.query(cls).all():
+                key = new_instance.__class__.__name__ + '.' + new_instance.id
+                db[key] = new_instance
         return db
 
     def new(self, obj):
@@ -52,12 +55,12 @@ class DBStorage:
         self.__session.commit()
 
     def delete(self, obj=None):
-        """Remove object from __objects if it exists."""
+        """Remove object if exists."""
         if obj is not None:
-            self.__sesion.delete(obj)
+            self.__session.delete(obj)
 
     def reload(self):
-        """Loads storage dictionary from file"""
+        """Loads storage dictionary"""
 
         Base.metadata.create_all(self.__engine)
         session_db = sessionmaker(bind=self.__engine, expire_on_commit=False)

@@ -5,7 +5,7 @@ CREATE DATABASE IF NOT exists hbnb_test_db;
 
 USE hbnb_test_db;
 
-CREATE USER hbnb_test@'localhost' IDENTIFIED BY 'hbnb_test_pwd';
+CREATE USER IF NOT exists hbnb_test@'localhost' IDENTIFIED BY 'hbnb_test_pwd';
 
 GRANT ALL ON hbnb_test_db.* TO 'hbnb_test'@'localhost';
 

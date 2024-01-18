@@ -13,13 +13,16 @@ if getenv('HBNB_TYPE_STORAGE') == 'db':
 
         email = Column(String(128), nullable=False)
         password = Column(String(128), nullable=False)
-        first_name = Column(String(128), nullable=True)
-        last_name = Column(String(128), nullable=True)
+        first_name = Column(String(128))
+        last_name = Column(String(128))
 
+        from models.place import Place
+        from models.review import Review
         places = relationship("Place", backref="user", cascade="all, delete")
         reviews = relationship('Review', backref='user', cascade='all, delete')
 else:
     class User(BaseModel):
+        ''' We use this option in case HBNB_TYPE_STORAGE is file_storage'''
         email = ""
         password = ""
         first_name = ""

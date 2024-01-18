@@ -74,7 +74,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] == '{' and pline[-1] =='}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -116,20 +116,20 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, arg):
         """ Create an object of any class"""
-        
+
         ''' validate if there are arguments'''
         if not arg:
             print("** class doesn't exist **")
             return
-        
+
         ''' Separate the strings'''
         class_name, *params = arg.split()
-        
+
         """ Get the class name and create instance """
         if class_name not in self.classes:
             print("** class doesn't exist **")
             return
-        
+
         else:
             new_instance = self.classes[class_name]()
 
@@ -149,8 +149,8 @@ class HBNBCommand(cmd.Cmd):
                         value = int(value)
                     except ValueError:
                         continue
-                setattr(new_instance, key, value)            
-        
+                setattr(new_instance, key, value)
+
         new_instance.save()
         print(new_instance.id)
 
@@ -215,7 +215,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -228,7 +228,7 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
         new_list = []
-        
+
         if getenv('HBNB_TYPE_STORAGE') == 'db':
             store = storage.all(eval(args))
         else:
@@ -240,7 +240,7 @@ class HBNBCommand(cmd.Cmd):
             if class_name not in self.classes:
                 print("** class doesn't exist **")
                 return
-            
+
             for key, value in store.items():
                 if key.split('.')[0] == args:
                     new_list.append(str(value))
@@ -354,6 +354,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
