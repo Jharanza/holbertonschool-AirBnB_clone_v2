@@ -66,3 +66,7 @@ class FileStorage:
                     del self.__objects[key]
         except ValueError:
             pass
+
+    def close(self):
+        ''' Method to deserialize the json file '''
+        self.reload()
