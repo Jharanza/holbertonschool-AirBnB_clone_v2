@@ -27,7 +27,7 @@ class BaseModel:
         )
     else:
         def __init__(self, *args, **kwargs):
-            """Instatntiates a new model"""
+            """Instantiates a new model"""
 
             if not kwargs:
                 self.id = str(uuid.uuid4())
@@ -59,7 +59,7 @@ class BaseModel:
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
-        from models import storage
+        import models
         self.updated_at = datetime.now()
         models.storage.new(self)
         models.storage.save()
