@@ -13,7 +13,7 @@ def hello():
     return 'Hello Jhony'
 
 
-@app.teardown_appcontext()
+@app.teardown_appcontext
 def teardown_session(exception):
     ''' Method that close the session '''
     storage.close()
@@ -21,11 +21,11 @@ def teardown_session(exception):
 
 @app.route('/cities_by_states', strict_slashes=False)
 def display_cities_and_states():
-    ''' Method that  '''
+    ''' Method that render a template with all State objects sorted '''
     states = storage.all(State).values()
-    states = sorted(states, key=lambda state: state.name)
+    states_sort = sorted(states, key=lambda state: state.name)
 
-    return render_template('8-cities_by_states.html', states=states)
+    return render_template('8-cities_by_states.html', states=states_sort)
 
 
 if __name__ == '__main__':
