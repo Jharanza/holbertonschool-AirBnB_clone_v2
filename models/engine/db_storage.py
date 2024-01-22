@@ -1,14 +1,8 @@
-#! /usr/bin/python3
+#!/usr/bin/python3
 from os import getenv
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, scoped_session, declarative_base
+from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import Base
-from models.user import User
-from models.place import Place
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.review import Review
 
 
 class DBStorage:
@@ -49,7 +43,7 @@ class DBStorage:
         return db
 
     def new(self, obj):
-        """Adds new object to dbstorage dictionary"""
+        """Adds new object to db_storage dictionary"""
         self.__session.add(obj)
 
     def save(self):
@@ -63,7 +57,6 @@ class DBStorage:
 
     def reload(self):
         """Loads storage dictionary"""
-
         Base.metadata.create_all(self.__engine)
         session_db = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(session_db)
