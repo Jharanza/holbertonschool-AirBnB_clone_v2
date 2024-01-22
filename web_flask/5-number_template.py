@@ -43,7 +43,7 @@ def is_number(n):
 @app.route('/number_template/<int:n>')
 def display_html(n):
     ''' Method that use a template'''
-    return render_template('5-number_template.html', n=n)
+    return render_template('5-number.html', n=n)
 
 
 if __name__ == '__main__':
