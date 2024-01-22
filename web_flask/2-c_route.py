@@ -1,7 +1,6 @@
-#! /usr/bin/python3
+#!/usr/bin/python3
 ''' Module that create a server that accept variables '''
 from flask import Flask
-from markupsafe import escape
 
 
 app = Flask(__name__)
@@ -24,7 +23,7 @@ def third(text):
     ''' endpoint that accept a variable as argument '''
     if '_' in text:
         text = text.replace('_', ' ')
-    return f'C {escape(text)}'
+    return f'C {text}'
 
 
 if __name__ == '__main__':

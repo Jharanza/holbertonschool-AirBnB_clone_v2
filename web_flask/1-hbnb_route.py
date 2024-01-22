@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#!/usr/bin/python3
 ''' Module that create a server with two points '''
 from flask import Flask
 

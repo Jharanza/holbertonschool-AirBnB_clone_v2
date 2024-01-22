@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#!/usr/bin/python3
 '''
 Module that create a server with a endpoint that receive
 2 variables and render a template that change with the value of

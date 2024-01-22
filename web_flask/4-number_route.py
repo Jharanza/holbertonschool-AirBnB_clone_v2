@@ -1,10 +1,9 @@
-#! /usr/bin/python3
+#!/usr/bin/python3
 '''
 Module that create a server with a endpoint that receive
 a specific type of value
 '''
-from flask import Flask, render_template, make_response
-from markupsafe import escape
+from flask import Flask
 
 
 app = Flask(__name__)
@@ -27,7 +26,7 @@ def third(text):
     ''' method that returns a variable '''
     if '_' in text:
         text = text.replace('_', ' ')
-    return f'C {escape(text)}'
+    return f'C {text}'
 
 
 @app.route('/python/', strict_slashes=False)
@@ -36,13 +35,13 @@ def python(text='is cool'):
     ''' method that returns a variable with a default value '''
     if '_' in text:
         text = text.replace('_', ' ')
-    return f'Python {escape(text)}'
+    return f'Python {text}'
 
 
 @app.route('/number/<int:n>', strict_slashes=False)
 def n_number(n):
     if isinstance(n, int):
-        return f'{escape(n)} is a number'
+        return f'{n} is a number'
     else:
         return 'not found'
 

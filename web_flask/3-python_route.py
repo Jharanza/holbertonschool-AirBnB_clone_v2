@@ -1,7 +1,6 @@
-#! /usr/bin/python3
+#!/usr/bin/python3
 ''' Module that create a server with a endpoint with a default value '''
 from flask import Flask
-from markupsafe import escape
 
 
 app = Flask(__name__)
@@ -24,7 +23,7 @@ def third(text):
     ''' method that returns a variable '''
     if '_' in text:
         text = text.replace('_', ' ')
-    return f'C {escape(text)}'
+    return f'C {text}'
 
 
 @app.route('/python/', strict_slashes=False)
@@ -33,7 +32,7 @@ def python(text='is cool'):
     ''' method that returns a variable with a default value '''
     if '_' in text:
         text = text.replace('_', ' ')
-    return f'Python {escape(text)}'
+    return f'Python {text}'
 
 
 if __name__ == '__main__':

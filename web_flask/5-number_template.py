@@ -1,9 +1,9 @@
-#! /usr/bin/python3
+#!/usr/bin/python3
 '''
 Module that create a server with a endpoint that receive
 a variable and render a template
 '''
-from flask import Flask, render_template, make_response
+from flask import Flask, render_template
 
 
 app = Flask(__name__)
