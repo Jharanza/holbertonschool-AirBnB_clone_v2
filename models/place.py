@@ -1,14 +1,14 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
-from models.base_model import BaseModel, Base
 from os import getenv
-from sqlalchemy import Column, Integer, String, ForeignKey, Float
-from sqlalchemy import Table
+from sqlalchemy import Column, Integer, String, ForeignKey, Float, Table
 from sqlalchemy.orm import relationship
+from models.base_model import BaseModel, Base
+from models.amenity import Amenity
+from models import storage
 
 
 if getenv('HBNB_TYPE_STORAGE') == 'db':
-    ''' Table place_amenity that use many to many relationship'''
     place_amenity = Table('place_amenity', Base.metadata,
                           Column(
                               'place_id', String(60), ForeignKey('places.id'),
@@ -41,6 +41,7 @@ if getenv('HBNB_TYPE_STORAGE') == 'db':
         amenity_ids = []
 else:
     class Place(BaseModel):
+        """ Use this option to file_storage """
         city_id = ''
         user_id = ''
         name = ''
@@ -56,8 +57,6 @@ else:
         @property
         def amenities(self):
             '''Method that return a list of instances based in amenity_ids'''
-            from models.amenity import Amenity
-            from models import storage
             data_amenity = storage.all(Amenity)
             amenity_list = [
                 data_amenity for data_amenity in data_amenity.values()

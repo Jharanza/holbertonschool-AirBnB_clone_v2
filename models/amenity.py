@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
-from models.base_model import BaseModel, Base
+from os import getenv
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-from sqlalchemy.ext.declarative import declarative_base
-from os import getenv
+from models.base_model import BaseModel, Base
+
 
 if getenv('HBNB_TYPE_STORAGE') == 'db':
 
