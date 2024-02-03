@@ -11,6 +11,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import shlex
 
 
 class HBNBCommand(cmd.Cmd):
@@ -113,46 +114,48 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """ Overrides the emptyline method of CMD """
         pass
+    
+    def _key_value_parser(self, args):
+        """creates a dictionary from a list of strings"""
+        new_dict = {}
+        for arg in args:
+            if "=" in arg:
+                kvp = arg.split('=', 1)
+                key = kvp[0]
+                value = kvp[1]
+                if value[0] == value[-1] == '"':
+                    value = shlex.split(value)[0].replace('_', ' ')
+                else:
+                    try:
+                        value = int(value)
+                    except:
+                        try:
+                            value = float(value)
+                        except:
+                            continue
+                new_dict[key] = value
+        return new_dict
 
     def do_create(self, arg):
         """ Create an object of any class"""
 
-        ''' validate if there are arguments'''
-        if not arg:
-            print("** class doesn't exist **")
-            return
-
-        ''' Separate the strings'''
-        class_name, *params = arg.split()
-
-        """ Get the class name and create instance """
+        args = arg.split()
+        
+        if not args:
+            print("** class name missing **")
+            return False
+        
+        class_name = args[0]
+        
         if class_name not in self.classes:
-            print("** class doesn't exist **")
-            return
-
-        else:
-            new_instance = self.classes[class_name]()
-
-        for param in params:
-            key, value = param.split('=')
-
-            if hasattr(new_instance, key):
-                if value[0] == '"' and value[-1] == '"':
-                    value = value[1:-1].replace('"', r'\"').replace('_', ' ')
-                elif '.' in value:
-                    try:
-                        value = float(value)
-                    except ValueError:
-                        continue
-                else:
-                    try:
-                        value = int(value)
-                    except ValueError:
-                        continue
-                setattr(new_instance, key, value)
-
-        new_instance.save()
+            print("** class doesn't exists**")
+            return False
+        
+        attributes = self._key_value_parser(args[1:])
+        new_instance = self.classes[class_name](**attributes)
+        
         print(new_instance.id)
+        new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
